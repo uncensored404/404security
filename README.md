@@ -14,7 +14,7 @@ Mainteneur : 404sec — https://github.com/uncensored404/404security
 - **404-DASHBOARD** : console web temps réel (FastAPI + WebSocket)
 
 ## Installation
-    git clone https://github.com/404sec/404security.git
+    git clone https://github.com/uncensored404/404security.git
     cd 404security
     python3 -m venv .venv && . .venv/bin/activate
     pip install -r requirements.txt
