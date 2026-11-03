@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>404SECURITY - Supervision</title>
+  <style>
+    body{background:#0d1117;color:#c9d1d9;font-family:monospace;margin:0;padding:2rem}
+    h1{color:#58a6ff;font-size:1.4rem} h1 span{color:#f85149}
+    .card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:1rem;margin:1rem 0}
+    table{width:100%;border-collapse:collapse;font-size:.85rem}
+    th,td{padding:.45rem .6rem;border-bottom:1px solid #21262d;text-align:left}
+    th{color:#8b949e}
+    .high,.critical{color:#f85149;font-weight:bold}
+    .medium{color:#d29922} .low{color:#3fb950}
+    #dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#f85149;margin-right:.5rem}
+    #dot.on{background:#3fb950}
+  </style>
+</head>
+<body>
+  <h1><span>404</span>SECURITY - console de supervision</h1>
+  <div class="card"><span id="dot"></span><span id="status">connexion...</span></div>
+  <table id="log">
+    <thead><tr><th>Heure</th><th>Module</th><th>Severite</th><th>Type</th><th>IP source</th></tr></thead>
+    <tbody></tbody>
+  </table>
+  <script>
+    const tbody = document.querySelector("#log tbody");
+    const dot = document.getElementById("dot");
+    const status = document.getElementById("status");
+    const scheme = location.protocol === "https:" ? "wss" : "ws";
+
+    function add(alert) {
+      const tr = tbody.insertRow(0);
+      tr.innerHTML = "<td>" + new Date(alert.ts * 1000).toLocaleTimeString() + "</td>" +
+        "<td>" + alert.source + "</td>" +
+        "<td class='" + alert.severity + "'>" + alert.severity + "</td>" +
+        "<td>" + alert.type + "</td>" +
+        "<td>" + (alert.ip || "local") + "</td>";
+      if (tbody.rows.length > 200) tbody.deleteRow(-1);
+    }
+
+    fetch("/api/alerts").then(r => r.json()).then(list => list.reverse().forEach(add));
+
+    function connect() {
+      const ws = new WebSocket(scheme + "://" + location.host + "/ws");
+      ws.onopen = () => { dot.classList.add("on"); status.textContent = "flux temps reel actif"; };
+      ws.onclose = () => { dot.classList.remove("on"); status.textContent = "deconnecte, reconnexion...";
+                           setTimeout(connect, 3000); };
+      ws.onmessage = e => add(JSON.parse(e.data));
+    }
+    connect();
+  </script>
+</body>
+</html>

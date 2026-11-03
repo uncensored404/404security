@@ -1,0 +1,9 @@
+services:
+  security404:
+    build: .
+    container_name: security404
+    network_mode: host
+    cap_add: [NET_ADMIN, NET_RAW]
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped

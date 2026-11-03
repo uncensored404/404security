@@ -1,0 +1,19 @@
+logfire:
+  db_path: "data/events.db"
+  retention_days: 90
+netwatch:
+  interface: "eth0"
+  syn_flood_threshold: 100
+  portscan_threshold: 15
+sentinel:
+  watch_paths: ["/etc", "/usr/local/bin"]
+  interval: 60
+honeypot:
+  ssh_port: 2222
+  http_port: 8080
+responder:
+  auto_block_threshold: 10
+  block_duration_minutes: 30
+dashboard:
+  listen: "0.0.0.0"
+  port: 8443

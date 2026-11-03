@@ -1,0 +1,13 @@
+rules:
+  - name: ssh_bruteforce
+    match_type: ssh_connection
+    count: 8
+    window_s: 120
+    severity: high
+    description: "Plus de 8 connexions SSH depuis une meme IP en 2 min."
+  - name: http_recon
+    match_type: honeypot_http_hit
+    count: 20
+    window_s: 300
+    severity: medium
+    description: "Sonde HTTP repetee sur le leurre, reconnaissance automatisee."
