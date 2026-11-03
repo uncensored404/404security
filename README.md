@@ -1,7 +1,7 @@
 # 404SECURITY
 
 Suite de cyber-défense modulaire pour serveurs Linux.
-Mainteneur : 404sec — https://github.com/404sec/404security
+Mainteneur : 404sec — https://github.com/uncensored404/404security
 
 ## Modules
 - **404-SENTINEL** : HIDS — intégrité de fichiers, processus suspects
